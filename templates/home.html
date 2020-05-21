@@ -55,8 +55,8 @@
         }
 
         img {
-            max-width: 300px;
-            max-height: 250px;
+            width: 300px;
+            height: 250px;
             background-size: auto;
         }
 
@@ -91,7 +91,7 @@
 
 <body>
     <main>
-        <h1>Face Camparing App</h1>
+        <h1>Face Comparing App</h1>
         <form action="" id="image-form" method="POST" enctype="multipart/form-data" action="/compare/">
             {% csrf_token %}
             <div class="form-container">
@@ -135,7 +135,7 @@
             }
 
             xhr.onerror = (er) => {
-                console.log('Hellll', er)
+                console.log('Error Response: ', er)
             }
             xhr.send(formData)
         })

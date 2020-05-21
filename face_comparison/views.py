@@ -19,7 +19,6 @@ def compare_images(request, *args, **kwargs):
     if request.POST:
         img1 = request.FILES['image1']
         compare_face(img1)
-        print(type(img1))
 
     else:
         print('Not a valid one')
