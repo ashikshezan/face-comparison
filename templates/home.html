@@ -124,9 +124,10 @@
             const formData = new FormData(form)
 
             const xhr = new XMLHttpRequest()
-            xhr.open('POST', 'http://127.0.0.1:8000/compare/')
+            xhr.open('POST', '/compare/')
 
             xhr.onload = () => {
+                console.log('{% url "compare" %}')
                 const resp = xhr.response
                 console.log('Post Request Sent')
                 console.log(resp)
