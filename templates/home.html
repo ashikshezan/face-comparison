@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Face App</title>
+    <script type='text/javascript'>
+        function preview_image1(event) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('output_image1');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        function preview_image2(event) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('output_image2');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <style>
+        body {
+            background-color: #2A323A;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .imag-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .form-item {
+            text-align: center;
+        }
+
+        img {
+            max-width: 300px;
+            max-height: 250px;
+            background-size: auto;
+        }
+
+        input {
+            margin-top: 20px;
+            height: 0;
+            width: 0;
+        }
+
+        input+label {
+            background: #292930;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 12px 20px;
+        }
+
+        button {
+            background: #292930;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 12px 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Face Camparing App</h1>
+        <form action="" id="image-form" method="POST" enctype="multipart/form-data" action="/compare/">
+            {% csrf_token %}
+            <div class="form-container">
+                <div class="form-item">
+                    <img id="output_image1" />
+                    <div>
+                        <input type="file" id="file1" name="image1" onchange="preview_image1(event)" />
+                        <label for="file1" />First Image</label>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <img id="output_image2" />
+                    <div>
+                        <input type="file" id="file2" name="image2" onchange="preview_image2(event)" />
+                        <label for="file2" />Second Image</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit">Compare</button>
+            <p id='result'></p>
+        </form>
+
+    </main>
+
+    <script>
+        document.querySelector('#image-form').addEventListener("submit", (event) => {
+
+            event.preventDefault()
+            const form = document.getElementById('image-form')
+            const formData = new FormData(form)
+
+            const xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://127.0.0.1:8000/compare/')
+
+            xhr.onload = () => {
+                const resp = xhr.response
+                console.log('Post Request Sent')
+                console.log(resp)
+                document.getElementById('result').innerHTML = resp.slice(1, -1)
+            }
+
+            xhr.onerror = (er) => {
+                console.log('Hellll', er)
+            }
+            xhr.send(formData)
+        })
+    </script>
+</body>
+
+</html>
