@@ -16,7 +16,7 @@ def home(request, *args, **kwargs):
 
 
 def compare_images(request, *args, **kwargs):
-    data = 'error occured'
+    data = 'Error ocuured! Insert the file correctly.'
     if request.POST:
 
         try:
@@ -82,15 +82,15 @@ def compare_face(img1, img2):
         actenc2 = face_recognition.face_encodings(actim2_inp, face_locs2)[0]
         match_flag = face_recognition.compare_faces(actenc1, actenc2)
         face_dist0 = face_recognition.face_distance(actenc1, actenc2)
-        score = str(np.round(1 / (1 + np.exp(-8*(1-face_dist0[0]-0.4))), 3))
+        score_v = np.round(1 / (1 + np.exp(-8*(1-face_dist0[0]-0.4))), 3)
+        score = str(score_v)
 
         # sending back result:
         ms = 'Not '
-        if match_flag == True:
+        if score_v >= 0.5:
             ms = ''
         res = ('Matching %sFound - Matching Score: %s'
                % (ms, score))
-
     # Storing inputs and results (always, not only whithout error messages)
     # storing info and images whereever it's reasonable
     results.append([str(datetime.datetime.now().time()), imfile_name_1, imfile_name_2,
